@@ -23,7 +23,16 @@ public class Book {
     private String author;
     private Date yearOfPublication;
     private String genre;
+    private String description;
     private Integer NumberOfCopies;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public String getTitle() {
         return title;

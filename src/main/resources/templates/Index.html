@@ -69,6 +69,9 @@
     <h1>A convenient library for you</h1>
     <p>You can choose the books you are interested in and rent them here!</p>
     <a class="btn btn-secondary" href="/">Home</a>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Add">
+        Add book
+    </button>
 </div>
 
 <div class="container-fluid p-3 my-3 bg-dark text-white">
@@ -104,7 +107,9 @@
         <div class="book">
             <img th:src="@{|data:image/jpeg;base64,${book.image}|}" alt="Poster">
             <div class="book-info">
-                <h2 th:text="${book.title}"></h2>
+                <a th:href="@{/book/(bookId=${book.id})}">
+                    <h2 th:text="${book.title}"></h2>
+                </a>
                 <p th:text="${book.author}"></p>
                 <h6>Genre of book:<p th:text="${book.genre}"></p></h6>
                 <h6>Date of publication:<p th:text="${book.yearOfPublication}"></p></h6>
@@ -113,10 +118,60 @@
         </div>
     </div>
 </div>
-
 <div class="jumbotron text-center" style="margin-bottom:0">
     <p>The application was developed as a part of the Modern Programming Frameworks course.</p>
     <p>The author of the application is Vitalii Savostian.</p>
+</div>
+
+<!-- The Modal -->
+<div class="modal" id="Add">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">New book</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form method="POST" th:action="@{/book/save}"
+                      class="needs-validation" novalidate>
+                    <div class="form-group">
+                        <label for="title" class="form-label">Enter title: </label>
+                        <input type="text" name="title" id="title" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="author" class="form-label">Enter author: </label>
+                        <input type="text" name="author" id="author" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="genre" class="form-label">Enter genre: </label>
+                        <input type="text" name="genre" id="genre" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="NumberOfCopies" class="form-label">Enter number of copies: </label>
+                        <input type="number" name="NumberOfCopies" id="NumberOfCopies" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="description" class="form-label">Enter description: </label>
+                        <input type="text" name="description" id="description" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="yearOfPublication" class="form-label">Enter publication date: </label>
+                        <input type="date" name="yearOfPublication" id="yearOfPublication" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="image" class="form-label">Download cover art: </label>
+                        <input type="file" name="image" id="image" class="form-control"/>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Rent</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 </body>
