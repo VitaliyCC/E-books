@@ -16,7 +16,7 @@
         }
     </style>
     <style>
-        /* Додайте стилі за бажанням для форматування блоків книг */
+
         .book {
             border: 1px solid #ccc;
             padding: 10px;
@@ -25,11 +25,11 @@
         }
 
         .book img {
-            max-width: 500px; /* Ширина обкладинки книги */
-            margin-right: 10px; /* Відступ між обкладинкою і інформацією */
+            max-width: 50%; /* Забезпечте, щоб зображення завжди займало 100% ширини блоку */
+            height: auto; /* Автоматичне визначення висоти для збереження співвідношення сторін */
+            display: flex;
         }
 
-        /* Стилізація контейнера book-info */
         .book-info {
             flex-grow: 1; /* Займає доступну ширину */
             background-color: #f5f5f5;
@@ -40,21 +40,21 @@
             margin-bottom: 20px;
         }
 
-        /* Стилізація заголовка h2 */
+
         .book-info h2 {
             font-size: 24px;
             color: #333;
             margin-bottom: 10px;
         }
 
-        /* Стилізація жанру та автора */
+
         .book-info p {
             font-size: 18px;
             color: #666;
             margin: 5px 0;
         }
 
-        /* Стилізація додаткової інформації */
+
         .book-info h6 {
             font-size: 16px;
             color: #999;
@@ -113,14 +113,9 @@
                 <p th:text="${book.author}"></p>
                 <h6>Genre of book:<p th:text="${book.genre}"></p></h6>
                 <h6>Date of publication:<p th:text="${book.yearOfPublication}"></p></h6>
-                <h6>Number of copies available: <p th:text="${book.NumberOfCopies}"></p></h6>
             </div>
         </div>
     </div>
-</div>
-<div class="jumbotron text-center" style="margin-bottom:0">
-    <p>The application was developed as a part of the Modern Programming Frameworks course.</p>
-    <p>The author of the application is Vitalii Savostian.</p>
 </div>
 
 <!-- The Modal -->
@@ -136,7 +131,7 @@
 
             <!-- Modal body -->
             <div class="modal-body">
-                <form method="POST" th:action="@{/book/save}"
+                <form method="POST" th:action="@{/book/save}" enctype="multipart/form-data"
                       class="needs-validation" novalidate>
                     <div class="form-group">
                         <label for="title" class="form-label">Enter title: </label>
@@ -156,23 +151,28 @@
                     </div>
                     <div class="form-group">
                         <label for="description" class="form-label">Enter description: </label>
-                        <input type="text" name="description" id="description" class="form-control"/>
+                        <textarea type="text" name="description" id="description" class="form-control"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="yearOfPublication" class="form-label">Enter publication date: </label>
                         <input type="date" name="yearOfPublication" id="yearOfPublication" class="form-control"/>
                     </div>
                     <div class="form-group">
-                        <label for="image" class="form-label">Download cover art: </label>
-                        <input type="file" name="image" id="image" class="form-control"/>
+                        <label for="coverImage" class="form-label">Load cover art: </label>
+                        <input type="file" name="coverImage" id="coverImage" class="form-control"/>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Rent</button>
+                    <button type="submit" class="btn btn-primary">Add book</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
 
+<footer class="jumbotron text-center" style="margin-bottom:0">
+    <p>The application was developed as a part of the Modern Programming Frameworks course.</p>
+    <p>The author of the application is Vitalii Savostian.</p>
+</footer>
 </body>
 </html>
+

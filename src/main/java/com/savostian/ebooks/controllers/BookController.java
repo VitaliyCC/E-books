@@ -12,13 +12,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Base64;
 import java.util.List;
 
 @Controller
 public class BookController {
+
     @Autowired
     private BookRepos bookRepository;
     @Autowired
@@ -30,6 +34,7 @@ public class BookController {
     public String index(Model model) {
         List<Book> books = (List<Book>) bookRepository.findAll();
         model.addAttribute("books", books);
+
         return "index";
     }
 
@@ -37,29 +42,61 @@ public class BookController {
     public String search(@RequestParam("keyword") String keyword, Model model) {
         List<Book> books = bookRepository.findByTitleContainingOrAuthorContainingOrGenreContaining(keyword, keyword, keyword);
         model.addAttribute("books", books);
+
         return "index";
     }
 
     @GetMapping("/books")
     public String sort(@RequestParam("sortBy") String sortBy, Model model) {
-        List<Book> books = bookService.getSortedBooks(sortBy, "asc" );
+        List<Book> books = bookService.getSortedBooks(sortBy, "asc");
         model.addAttribute("books", books);
+
         return "index";
     }
 
     @GetMapping("/book/")
-    public String getBookById(@RequestParam("bookId")  Integer bookId, Model model) {
+    public String getBookById(@RequestParam("bookId") Integer bookId, Model model) {
         Book book = bookRepository.findBookById(bookId);
-        List<OperationsOnBooks> operations= operationsOnBooksRepos.findOperationsOnBooksByBookId(book.getId());
+        List<OperationsOnBooks> operations = operationsOnBooksRepos.findOperationsOnBooksByBookId(book.getId());
+        book.setNumberOfCopies(book.getNumberOfCopies() - operations.size());
         model.addAttribute("book", book);
         model.addAttribute("operations", operations);
+
         return "BookPage";
     }
 
     @PostMapping("/book/save")
-    String createNewOperation(@ModelAttribute("book") Book book) {
+    String createNewOperation(@RequestParam("coverImage") MultipartFile file, @ModelAttribute("book") Book book) throws IOException {
+        book.setImage(file.getBytes());
         bookRepository.save(book);
+
         return "redirect:/";
     }
 
+    @GetMapping("/book/delete/")
+    public String deleteBookById(@RequestParam("bookId") Integer bookId) {
+        bookRepository.deleteById(bookId);
+
+        return "redirect:/";
+    }
+
+    @PostMapping("/book/update")
+    public String updateBook(@RequestParam("coverImage") MultipartFile file, @ModelAttribute("book") Book updatedBook, Model model) throws IOException {
+
+        if (file.isEmpty()) {
+            updatedBook.setImage(Base64.getDecoder().decode(bookRepository.findBookById(updatedBook.getId()).getImage()));
+
+        } else {
+            updatedBook.setImage(file.getBytes());
+
+        }
+
+        bookRepository.save(updatedBook);
+
+        List<OperationsOnBooks> operations = operationsOnBooksRepos.findOperationsOnBooksByBookId(updatedBook.getId());
+        model.addAttribute("book", updatedBook);
+        model.addAttribute("operations", operations);
+
+        return "BookPage";
+    }
 }

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface OperationsOnBooksRepos extends CrudRepository<OperationsOnBooks, Integer> {
 
-    List<OperationsOnBooks> findOperationsOnBooksByBookId (Integer bookId);
-    OperationsOnBooks save (OperationsOnBooks operationsOnBooks);
+    List<OperationsOnBooks> findOperationsOnBooksByBookId(Integer bookId);
 
+    OperationsOnBooks save(OperationsOnBooks operationsOnBooks);
 }

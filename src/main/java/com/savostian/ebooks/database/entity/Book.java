@@ -1,7 +1,6 @@
 package com.savostian.ebooks.database.entity;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Type;
 
 
 import java.sql.Date;
@@ -18,12 +17,13 @@ public class Book {
     private byte[] image;
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     private List<OperationsOnBooks> operations;
+    @Column(columnDefinition = "TEXT")
+    private String description;
 
     private String title;
     private String author;
     private Date yearOfPublication;
     private String genre;
-    private String description;
     private Integer NumberOfCopies;
 
     public String getDescription() {
@@ -91,8 +91,8 @@ public class Book {
     }
 
     public String getImage() {
-
         return Base64.getEncoder().encodeToString(image);
+        //return image;
     }
 
     public void setImage(byte[] image) {
