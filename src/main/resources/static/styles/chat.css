@@ -1,0 +1,66 @@
+
+.user-message {
+    background-color: #f2f2f2;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    text-align: right;
+}
+
+.assistant-message {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+#chat-container {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 300px;
+    height: 400px; /* Фіксований розмір чату */
+    background-color: #f5f5f5;
+    border-left: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    z-index: 999;
+}
+
+#chat-header {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+#chat-messages {
+    flex-grow: 1;
+    overflow-y: scroll; /* Додавання прокрутки виключно для повідомлень */
+    padding: 10px;
+}
+
+#chat-input {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+}
+
+/* Стилі для поля вводу */
+#message-input {
+    flex-grow: 1;
+    padding: 5px;
+    margin-right: 5px;
+    border: 1px solid #ddd;
+}
+
+/* Стилі для кнопки */
+#send-button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-left: auto; /* Розташування кнопки відразу від краю рядка */
+}
