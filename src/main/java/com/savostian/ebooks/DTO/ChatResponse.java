@@ -23,5 +23,4 @@ public class ChatResponse {
         private Message message;
 
     }
-
 }
