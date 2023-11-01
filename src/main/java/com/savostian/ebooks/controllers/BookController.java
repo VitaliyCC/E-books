@@ -30,6 +30,7 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
+    // Метод обробки HTTP GET-запиту на головну сторінку. Він завантажує всі книги з репозиторію та передає їх до представлення "index".
     @GetMapping("/")
     public String index(Model model) {
         List<Book> books = (List<Book>) bookRepository.findAll();
@@ -38,6 +39,7 @@ public class BookController {
         return "index";
     }
 
+    // Метод обробки HTTP POST-запиту на пошук книги за ключовим словом. Знайдені книги передаються до представлення "index".
     @PostMapping("/search")
     public String search(@RequestParam("keyword") String keyword, Model model) {
         List<Book> books = bookRepository.findByTitleContainingOrAuthorContainingOrGenreContaining(keyword, keyword, keyword);
@@ -46,6 +48,8 @@ public class BookController {
         return "index";
     }
 
+    // Метод обробки HTTP GET-запиту для сортування книг за обраним параметром сортування.
+    // Результат сортування передається до представлення "index".
     @GetMapping("/books")
     public String sort(@RequestParam("sortBy") String sortBy, Model model) {
         List<Book> books = bookService.getSortedBooks(sortBy, "asc");
@@ -54,6 +58,8 @@ public class BookController {
         return "index";
     }
 
+    // Метод обробки HTTP GET-запиту для перегляду деталей про окрему книгу.
+    // Він завантажує книгу та відповідні операції, а потім передає їх до представлення "BookPage".
     @GetMapping("/book/")
     public String getBookById(@RequestParam("bookId") Integer bookId, Model model) {
         Book book = bookRepository.findBookById(bookId);
@@ -65,6 +71,8 @@ public class BookController {
         return "BookPage";
     }
 
+    // Метод обробки HTTP POST-запиту для створення нової операції (оренди) книги.
+    // Він приймає дані з форми, зберігає обкладинку та оновлює книгу в репозиторії.
     @PostMapping("/book/save")
     String createNewOperation(@RequestParam("coverImage") MultipartFile file, @ModelAttribute("book") Book book) throws IOException {
         book.setImage(file.getBytes());
@@ -73,6 +81,7 @@ public class BookController {
         return "redirect:/";
     }
 
+    // Метод обробки HTTP GET-запиту для видалення книги з репозиторію за її ідентифікатором.
     @GetMapping("/book/delete/")
     public String deleteBookById(@RequestParam("bookId") Integer bookId) {
         bookRepository.deleteById(bookId);
@@ -80,19 +89,22 @@ public class BookController {
         return "redirect:/";
     }
 
+    // Метод обробки HTTP POST-запиту для оновлення інформації про книгу (включаючи обкладинку).
+    // Він приймає дані з форми, оновлює обкладинку та оновлює інформацію про книгу в репозиторії.
     @PostMapping("/book/update")
-    public String updateBook(@RequestParam("coverImage") MultipartFile file, @ModelAttribute("book") Book updatedBook, Model model) throws IOException {
+    public String updateBook(@RequestParam("coverImage") MultipartFile file,
+                             @ModelAttribute("book") Book updatedBook, Model model) throws IOException {
 
         if (file.isEmpty()) {
+            // Якщо обкладинка не була змінена, використовуємо попередню обкладинку.
             updatedBook.setImage(Base64.getDecoder().decode(bookRepository.findBookById(updatedBook.getId()).getImage()));
-
         } else {
+            // Інакше завантажуємо нову обкладинку.
             updatedBook.setImage(file.getBytes());
-
         }
 
+        // Зберігаємо оновлену інформацію про книгу в репозиторії та оновлюємо список операцій.
         bookRepository.save(updatedBook);
-
         List<OperationsOnBooks> operations = operationsOnBooksRepos.findOperationsOnBooksByBookId(updatedBook.getId());
         model.addAttribute("book", updatedBook);
         model.addAttribute("operations", operations);

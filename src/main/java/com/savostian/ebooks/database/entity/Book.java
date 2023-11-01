@@ -92,7 +92,6 @@ public class Book {
 
     public String getImage() {
         return Base64.getEncoder().encodeToString(image);
-        //return image;
     }
 
     public void setImage(byte[] image) {

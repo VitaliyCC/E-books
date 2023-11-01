@@ -1,0 +1,8 @@
+com\savostian\ebooks\database\entity\Book.class
+com\savostian\ebooks\utils\BookService.class
+com\savostian\ebooks\database\entity\OperationsOnBooks.class
+com\savostian\ebooks\database\repos\BookRepos.class
+com\savostian\ebooks\EBooksApplication.class
+com\savostian\ebooks\controllers\OperationsOnBooksController.class
+com\savostian\ebooks\controllers\BookController.class
+com\savostian\ebooks\database\repos\OperationsOnBooksRepos.class
